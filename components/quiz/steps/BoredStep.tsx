@@ -1,37 +1,34 @@
-// components/quiz/steps/AgeStep.tsx
+// components/quiz/steps/BoredStep.tsx
 "use client";
 
 import QuizOptionTile from "@/components/quiz/QuizOptionTile";
 
-type AgeStepProps = {
+type BoredStepProps = {
   value?: string;
   onSelect: (value: string) => void;
 };
 
-const AGE_OPTIONS = [
-  { value: "2-3", label: "2–3 anos", icon: "🐣" },
-  { value: "4-5", label: "4–5 anos", icon: "🎨" },
-  { value: "6-7", label: "6–7 anos", icon: "🚀" },
-  { value: "8+", label: "8+ anos", icon: "🌈" },
+const BORED_OPTIONS = [
+  { value: "pede-telas", label: "Pede telas", icon: "📱" },
+  { value: "fica-agitada", label: "Fica agitada", icon: "🌀" },
+  { value: "perde-interesse", label: "Perde o interesse rápido", icon: "😕" },
+  { value: "pede-atividade", label: "Me pede algo para fazer", icon: "🙋‍♀️" },
 ];
 
-export default function AgeStep({ value, onSelect }: AgeStepProps) {
+export default function BoredStep({ value, onSelect }: BoredStepProps) {
   return (
     <section className="flex flex-col gap-4">
       <div className="text-center space-y-1">
         <p className="text-[12px] uppercase tracking-[0.18em] text-sky-500 font-semibold">
-          Passo 1
+          Passo 3
         </p>
         <h2 className="text-xl font-extrabold text-sky-800">
-          Quantos anos tem seu pequeno explorador?
+          Quando a criança fica entediada, o que acontece primeiro?
         </h2>
-        <p className="text-[12px] text-slate-600">
-          Assim eu escolho atividades na fase certinha de aprendizado. 🧠
-        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {AGE_OPTIONS.map((opt) => (
+        {BORED_OPTIONS.map((opt) => (
           <QuizOptionTile
             key={opt.value}
             icon={opt.icon}

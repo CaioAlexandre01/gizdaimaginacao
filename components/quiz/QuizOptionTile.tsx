@@ -1,25 +1,26 @@
-// components/quiz/QuizOptionButton.tsx
+// components/quiz/QuizOptionTile.tsx
 "use client";
 
-type QuizOptionButtonProps = {
+type QuizOptionTileProps = {
   icon: string;
   label: string;
   selected?: boolean;
   onClick: () => void;
 };
 
-export default function QuizOptionButton({
+export default function QuizOptionTile({
   icon,
   label,
   selected = false,
   onClick,
-}: QuizOptionButtonProps) {
+}: QuizOptionTileProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={[
-        "w-full flex items-center gap-3 rounded-[999px] px-4 py-3 text-sm font-medium",
+        "flex flex-col items-center justify-center gap-2",
+        "rounded-2xl px-3 py-4 text-sm font-medium",
         "bg-[#F2F7FF] border border-sky-100 text-sky-900",
         "hover:bg-[#E4EEFF] hover:-translate-y-[1px] transition-all",
         selected ? "ring-2 ring-sky-400 border-sky-400 bg-[#E0ECFF]" : "",
@@ -27,8 +28,8 @@ export default function QuizOptionButton({
         .join(" ")
         .trim()}
     >
-      <span className="text-xl">{icon}</span>
-      <span>{label}</span>
+      <span className="text-2xl">{icon}</span>
+      <span className="text-[13px]">{label}</span>
     </button>
   );
 }

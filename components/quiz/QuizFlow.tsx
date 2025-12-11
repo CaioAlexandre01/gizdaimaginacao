@@ -5,13 +5,19 @@ import { useState } from "react";
 import ProgressBar from "@/components/layout/ProgressBar";
 import IntroStep from "@/components/quiz/steps/IntroStep";
 import AgeStep from "@/components/quiz/steps/AgeStep";
+import NeedsStep from "@/components/quiz/steps/NeedsStep";
+import BoredStep from "@/components/quiz/steps/BoredStep";
+import SimplifyStep from "@/components/quiz/steps/SimplifyStep";
+import ResultStep from "@/components/quiz/steps/ResultStep";
 
-type QuizAnswers = {
+export type QuizAnswers = {
   ageRange?: string;
-  // depois vamos adicionar: context, goal, time, etc.
+  needMost?: string;
+  boredReaction?: string;
+  simplifyWish?: string;
 };
 
-const STEPS = ["intro", "age", "context", "goal", "time", "result"] as const;
+const STEPS = ["intro", "age", "needs", "bored", "simplify", "result"] as const;
 const TOTAL_STEPS = STEPS.length;
 
 export default function QuizFlow() {
@@ -22,12 +28,32 @@ export default function QuizFlow() {
     setStepIndex((prev) => Math.min(prev + 1, TOTAL_STEPS - 1));
   };
 
+  const restart = () => {
+    setAnswers({});
+    setStepIndex(0);
+  };
+
+  const currentStep = STEPS[stepIndex];
+
   const handleAgeSelect = (ageRange: string) => {
     setAnswers((prev) => ({ ...prev, ageRange }));
     goNext();
   };
 
-  const currentStep = STEPS[stepIndex];
+  const handleNeedSelect = (needMost: string) => {
+    setAnswers((prev) => ({ ...prev, needMost }));
+    goNext();
+  };
+
+  const handleBoredSelect = (boredReaction: string) => {
+    setAnswers((prev) => ({ ...prev, boredReaction }));
+    goNext();
+  };
+
+  const handleSimplifySelect = (simplifyWish: string) => {
+    setAnswers((prev) => ({ ...prev, simplifyWish }));
+    goNext();
+  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -39,25 +65,30 @@ export default function QuizFlow() {
           <AgeStep value={answers.ageRange} onSelect={handleAgeSelect} />
         );
 
-      // por enquanto, placeholders pros próximos passos
-      case "context":
-      case "goal":
-      case "time":
+      case "needs":
+        return (
+          <NeedsStep value={answers.needMost} onSelect={handleNeedSelect} />
+        );
+
+      case "bored":
+        return (
+          <BoredStep
+            value={answers.boredReaction}
+            onSelect={handleBoredSelect}
+          />
+        );
+
+      case "simplify":
+        return (
+          <SimplifyStep
+            value={answers.simplifyWish}
+            onSelect={handleSimplifySelect}
+          />
+        );
+
       case "result":
       default:
-        return (
-          <section className="bg-white/95 rounded-[30px] shadow-xl px-5 py-6 text-center">
-            <p className="text-sm text-slate-700 mb-4">
-              Step <strong>{currentStep}</strong> ainda não implementado.
-            </p>
-            <button
-              onClick={goNext}
-              className="w-full rounded-full bg-orange-400 py-3 text-sm font-semibold text-white hover:bg-orange-500 active:scale-[0.98] transition"
-            >
-              Próximo
-            </button>
-          </section>
-        );
+        return <ResultStep answers={answers} onRestart={restart} />;
     }
   };
 
