@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import ProductCarousel from "@/components/ui/ProductCarousel";
 import type { QuizAnswers } from "@/components/quiz/QuizFlow";
 
 type ResultStepProps = {
@@ -37,7 +38,6 @@ const simplifyLabelMap: Record<string, string> = {
   "manter-ocupada": "manter a criança ocupada com qualidade 🧩",
 };
 
-const KIWIFY_URL = "https://pay.kiwify.com.br/f7bhoJy";
 
 export default function ResultStep({ answers, onRestart }: ResultStepProps) {
   const ageText = answers.ageRange ? ageLabelMap[answers.ageRange] : null;
@@ -69,6 +69,8 @@ export default function ResultStep({ answers, onRestart }: ResultStepProps) {
           e atividades prontas pra usar sem drama.
         </p>
       </div>
+
+
 
       {/* história + imagem */}
       <div className="bg-sky-50/80 rounded-3xl px-4 py-3 text-sm text-slate-700 space-y-3">
@@ -167,22 +169,6 @@ export default function ResultStep({ answers, onRestart }: ResultStepProps) {
         </div>
       </div>
 
-      {/* CTA Kiwify */}
-      <div className="space-y-2">
-        <a
-          href={KIWIFY_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="block w-full text-center rounded-full bg-emerald-500 py-3 text-sm font-semibold text-white shadow-md hover:bg-emerald-600 active:scale-[0.98] transition"
-        >
-          Quero liberar meu kit para imprimir agora 🚀
-        </a>
-        <p className="text-[12px] text-center text-slate-600">
-          Pagamento e acesso seguros pela Kiwify. Link com todos os materiais
-          chega na hora no seu e-mail. 📩
-        </p>
-      </div>
-
       {/* botão secundário */}
       <button
         type="button"
@@ -191,6 +177,10 @@ export default function ResultStep({ answers, onRestart }: ResultStepProps) {
       >
         Refazer o quiz ou responder por outra criança 🔁
       </button>
+
+      <div className="mx-auto w-full max-w-md">
+        <ProductCarousel />
+      </div>
     </section>
   );
 }

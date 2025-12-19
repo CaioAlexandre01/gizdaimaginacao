@@ -1,7 +1,6 @@
 // app/page.tsx
 import Image from "next/image";
 import QuizFlow from "@/components/quiz/QuizFlow";
-
 export default function HomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden">
@@ -19,7 +18,7 @@ export default function HomePage() {
       {/* Véu suave pra contraste */}
       <div className="absolute inset-0 bg-gradient-to-b from-sky-100/70 via-sky-100/40 to-sky-200/60 -z-10" />
 
-      <div className="relative max-w-md mx-auto px-4 pt-8 pb-12 flex flex-col gap-6">
+      <div className="relative z-10 max-w-md mx-auto px-4 pt-8 pb-12 flex flex-col gap-6">
         {/* Header com logo */}
         <header className="flex flex-col items-center gap-2">
           <div className="bg-white/90 rounded-3xl px-6 py-3 shadow-lg flex items-center justify-center">
@@ -46,6 +45,7 @@ export default function HomePage() {
           <QuizFlow />
         </div>
       </div>
+
     </main>
   );
 }
