@@ -4,54 +4,39 @@ import { useEffect, useState } from "react";
 
 import {
   initialProducts,
-  productCarouselStorageKey,
   type Product,
 } from "@/data/products";
-
-const STORAGE_KEY = productCarouselStorageKey;
-
-const readStoredProducts = (): Product[] | null => {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const storedValue = window.localStorage.getItem(STORAGE_KEY);
-  if (!storedValue) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(storedValue) as Product[];
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed;
-    }
-  } catch {
-    // Ignore corrupted store and fall back to defaults.
-  }
-
-  return null;
-};
+import {
+  readCachedProducts,
+  subscribeToRemoteProducts,
+  writeCachedProducts,
+} from "@/lib/products-store";
 
 export default function ProductCarousel() {
   const [products, setProducts] = useState<Product[]>(
-    () => readStoredProducts() ?? initialProducts,
+    () => readCachedProducts() ?? initialProducts,
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return undefined;
-    }
+    const unsubscribe = subscribeToRemoteProducts(
+      (remoteProducts) => {
+        if (remoteProducts.length) {
+          setProducts(remoteProducts);
+          writeCachedProducts(remoteProducts);
+        } else {
+          const cached = readCachedProducts();
+          setProducts(cached ?? initialProducts);
+        }
+      },
+      (error) => {
+        console.error("Erro ao ouvir produtos do Firebase", error);
+        const cached = readCachedProducts();
+        setProducts(cached ?? initialProducts);
+      },
+    );
 
-    const handleStorageChange = () => {
-      const reloaded = readStoredProducts();
-      if (reloaded) {
-        setProducts(reloaded);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    return () => unsubscribe();
   }, []);
 
   if (!products.length) {
@@ -110,7 +95,7 @@ export default function ProductCarousel() {
               <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-[11px] uppercase tracking-[0.4em] text-slate-500">
                 <span>Imagem</span>
                 <span className="text-[9px] tracking-[0.3em]">
-                  Adicione em data/products.ts
+                  Envie uma imagem em /produtos
                 </span>
               </div>
             )}
